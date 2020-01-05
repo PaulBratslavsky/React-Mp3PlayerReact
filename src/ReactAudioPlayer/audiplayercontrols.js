@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { MdPlayArrow, MdPause } from "react-icons/md";
 import { IoMdSkipForward, IoMdSkipBackward } from "react-icons/io";
-import { context } from '../Api/audiocontext';
+// import { context } from '../Api/audiocontext';
 
 
 
@@ -29,34 +29,9 @@ const AudioPlayerControlsContainer = styled.div`
 
 
 const AudioPlayerControls = (props) => {
+    const { audioPlayer, context } = props;
 
-    // let context = new (window.AudioContext || window.webkitAudioContext)();
-
-    const [ isPlayingState, setIsPlayingState ] = React.useState(false);
-    let audioPlayer = React.createRef();
-    
-
-    React.useEffect( () => {
-        // Audio Player
-        audioPlayer.current.crossOrigin="anonymous";
-        audioPlayer.current.src = audioPath; 
-        audioPlayer.current.load();
-
-        
-        // let track = context.createMediaElementSource(audioPlayer.current);
-        let track = context.createMediaElementSource(audioPlayer.current);
-        let analyser = context.createAnalyser();
-
-        track.connect(context.destination);
-
-        console.log(track, "TRACK");
-        console.log(analyser, "ANALYZER")
-
-    
-    },[]);
-    
-
-
+    const [ isPlayingState, setIsPlayingState ] = React.useState(false);    
 
     function playPauseAudio() {
 
@@ -74,17 +49,8 @@ const AudioPlayerControls = (props) => {
         
     }
 
-
-
-
-    const { audioPath } = props;
-    console.log(context.state, "CONTEXT STATE");
-
-
-
     return (
         <AudioPlayerControlsContainer>
-            <audio ref={audioPlayer} controls /> 
             <div>
                 <IoMdSkipBackward color='#9994b6' size='2.5rem'/>
                 <Square onClick={playPauseAudio}> 
@@ -106,5 +72,10 @@ export default AudioPlayerControls;
 /* 
 <source  src={audioPath} type="audio/mpeg"  /> 
 <canvas ref={playerCanvas}></canvas>
+
+
+        //  let track = context.createMediaElementSource(audioPlayer.current);
+        //let track = context.createMediaElementSource(audioPlayer.current);
+        //let analyser = context.createAnalyser();
 
 */

@@ -1,1 +1,2 @@
-export let context = new (window.AudioContext || window.webkitAudioContext)();
+export let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+console.log(audioContext, "APPO");
