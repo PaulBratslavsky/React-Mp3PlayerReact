@@ -9,7 +9,7 @@ import AudioAnalyser from './audioanalizer';
 
 
 const data = {
-    songURL: 'https://archive.org/details/geometry_dash_1.9/Geometry+Dash+OST/BaseAfterBase.mp3',
+    songURL: 'https://www.bensound.com/bensound-music/bensound-summer.mp3',
     imageURL: 'https://thumbs.gfycat.com/FoolishEvilHyracotherium-size_restricted.gif',
     songTitle: 'Into Darkness',
     songDescription: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit.'
@@ -46,11 +46,8 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const ReactAudioPlayerContainer = styled.div`
-    position: absolute;
     margin: 0;
     padding: 1rem;
-    top: 0;
-    left: 0;
 
     width: 100%;
     background: #17121f;
@@ -58,24 +55,36 @@ const ReactAudioPlayerContainer = styled.div`
 
 class ReactAudioPlayer extends Component {
 
+    state = {
+        isPlaying: false
+    }
+
     constructor() {
         super();
         this.audioPlayer = React.createRef();
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
         this.track = null;
         this.analyser = this.audioContext.createAnalyser();
+
     }
 
     componentDidMount() {
         
         this.audioPlayer.current.crossOrigin="anonymous";
-        this.audioPlayer.current.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3" ; 
+        this.audioPlayer.current.src = "https://www.bensound.com/bensound-music/bensound-summer.mp3" ; 
         this.audioPlayer.current.load();
+        
+        this.analyser.fftSize = 128;
 
         this.track = this.audioContext.createMediaElementSource(this.audioPlayer.current);
-        
         this.track.connect(this.analyser);
         this.analyser.connect(this.audioContext.destination);
+    }
+
+    isPlaying = (isPlaying) => {
+        this.setState( {
+            isPlaying: !isPlaying
+        } );
     }
     
     componentWillUnmount() {
@@ -93,9 +102,9 @@ class ReactAudioPlayer extends Component {
                 <ReactAudioPlayerContainer>
                     <AudioPlayerImage imageURL={data.imageURL} altText={data.songTitle}/>
                     <AudioPlayerMeta songTitle={data.songTitle} songDescription={data.songDescription} />
-                    <AudioAnalyser analyser={this.analyser}/>
+                    { this.state.isPlaying && <AudioAnalyser analyser={this.analyser} isPlaying={this.state.isPlaying}/> }
                     <audio ref={this.audioPlayer} /> 
-                    <AudioPlayerControls context={this.audioContext } audioPlayer={this.audioPlayer} />
+                    <AudioPlayerControls context={this.audioContext } audioPlayer={this.audioPlayer} isPlaying={this.isPlaying}/>
                 </ReactAudioPlayerContainer>
             </React.Fragment>
     )

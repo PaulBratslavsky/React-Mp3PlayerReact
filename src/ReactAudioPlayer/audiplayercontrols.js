@@ -29,7 +29,7 @@ const AudioPlayerControlsContainer = styled.div`
 
 
 const AudioPlayerControls = (props) => {
-    const { audioPlayer, context } = props;
+    const { audioPlayer, context, isPlaying } = props;
 
     const [ isPlayingState, setIsPlayingState ] = React.useState(false);    
 
@@ -42,9 +42,11 @@ const AudioPlayerControls = (props) => {
         if ( isPlayingState === false ) {
             audioPlayer.current.play();
             setIsPlayingState(true);
+            isPlaying(false);
         } else {
             audioPlayer.current.pause();
             setIsPlayingState(false);
+            isPlaying(true);
         }
         
     }
