@@ -3,17 +3,18 @@ import styled from 'styled-components';
 
 const CanvasContainer = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 75px;
+  margin: 0 auto;
+
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+
+  overflow: hidden;
 `;
 
 const Canvas = styled.canvas`
-  z-index: 300;
-  left: 0;
-  top: 0;
+  height: 100%;
   width: 100%;
-  height: 100px;
 `;
 
 class AudioVisualiser extends Component {
@@ -30,33 +31,37 @@ class AudioVisualiser extends Component {
     const { audioData, bufferLength } = this.props;
     const canvas = this.canvas.current;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-
     const height = canvas.height;
     const width = canvas.width;
+    
     const context = canvas.getContext('2d');
 
+    // Clear Canvas every rerender
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
     context.fillStyle = "rgba(23, 18, 31, 0)";
     context.fillRect(0, 0, width, height);
-    context.beginPath();
     
     let x = 0;
 
-    var barWidth = (width / bufferLength) * 1.5;
-    var barHeight;
+    let barWidth = (width / bufferLength) * 2;
+    let barHeight;
 
     for (var i = 0; i < bufferLength; i++) {
-      barHeight = audioData[i]*3;
+      barHeight = ( audioData[i] / 1.75 );
       
-      var r = barHeight + (25 * (i/bufferLength));
-      var g = 250 * (i/bufferLength);
-      var b = 50;
+      let r = barHeight + (25 * (i/bufferLength));
+      let g = 250 * (i/bufferLength);
+      let b = 50;
 
       context.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
-      // context.fillStyle = "#fd1d4e";
+      
+      let my_gradient = context.createLinearGradient(0, 0, 0, 170);
+      my_gradient.addColorStop(1, "#fd1d4e");
+      my_gradient.addColorStop(0, "#17121f");
+      
+      // context.fillStyle = my_gradient;
+
       context.fillRect(x, height - barHeight, barWidth, barHeight);
 
       x += barWidth + 1;

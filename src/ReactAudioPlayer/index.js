@@ -53,6 +53,12 @@ const ReactAudioPlayerContainer = styled.div`
     background: #17121f;
 `;
 
+const ImageContainer = styled.div`
+    position: relative;
+    height: 100%;
+    width: 100%;
+`;
+
 class ReactAudioPlayer extends Component {
 
     state = {
@@ -101,8 +107,9 @@ class ReactAudioPlayer extends Component {
             <React.Fragment><GlobalStyle />
                 <ReactAudioPlayerContainer>
                     <AudioPlayerImage imageURL={data.imageURL} altText={data.songTitle}/>
-                    <AudioPlayerMeta songTitle={data.songTitle} songDescription={data.songDescription} />
                     { this.state.isPlaying && <AudioAnalyser analyser={this.analyser} isPlaying={this.state.isPlaying}/> }
+
+                    <AudioPlayerMeta songTitle={data.songTitle} songDescription={data.songDescription} />
                     <audio ref={this.audioPlayer} /> 
                     <AudioPlayerControls context={this.audioContext } audioPlayer={this.audioPlayer} isPlaying={this.isPlaying}/>
                 </ReactAudioPlayerContainer>
