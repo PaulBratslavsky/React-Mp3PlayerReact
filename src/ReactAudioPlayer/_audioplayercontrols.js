@@ -4,6 +4,8 @@ import { MdPlayArrow, MdPause } from "react-icons/md";
 import { IoMdSkipForward, IoMdSkipBackward } from "react-icons/io";
 
 
+
+
 const Square = styled.div`
 
     display: flex;
@@ -31,20 +33,21 @@ const AudioPlayerControls = (props) => {
     const [ audioDurationState, setAaudioDurationState ] = React.useState(0);
 
     let audioPlayer = React.createRef();
-
+    let context = null;
+    console.log(context, "STEP 1");
 
     React.useEffect( () => {
 
-        // Set up audio context
-        var context  = new (window.AudioContext || window.webkitAudioContext)();
-        var analyser = context.createAnalyser();
+        //context = new (window.AudioContext || window.webkitAudioContext)();
 
         audioPlayer.current.crossOrigin="anonymous";
         audioPlayer.current.src = audioPath; 
         audioPlayer.current.load();
 
-         var track = context.createMediaElementSource(audioPlayer.current);
-         track.connect(context.destination);
+        //let track = context.createMediaElementSource(audioPlayer.current);
+        //track.connect(context.destination);
+
+        console.log(context, "STEP 2");
 
     
     },[]);
@@ -52,16 +55,21 @@ const AudioPlayerControls = (props) => {
 
 
 
-    function playAudio() {
+    function playPauseAudio() {
+        console.log(context, "STEP 3");
         console.log('Play Audio Clicked', audioPlayer);
-        audioPlayer.current.play();
-        setIsPlayingState(true);
+
+        if ( isPlayingState === false ) {
+            audioPlayer.current.play();
+            setIsPlayingState(true);
+        } else {
+            audioPlayer.current.pause();
+            setIsPlayingState(false);
+        }
+        
     }
 
-    function pauseAudio() {
-        audioPlayer.current.pause(); 
-        setIsPlayingState(false);
-    }
+
 
 
     const { audioPath } = props;
@@ -71,7 +79,16 @@ const AudioPlayerControls = (props) => {
             <audio ref={audioPlayer} controls /> 
             <div id="canvas"></div>
             <h1 style={{color: 'red'}}>{audioDurationState}</h1>
-            <div><IoMdSkipBackward color='#9994b6' size='2.5rem'/>{ isPlayingState ? <Square onClick={pauseAudio}><MdPause color='#fffefe' size='3rem'/></Square> : <Square onClick={playAudio}><MdPlayArrow color='#fffefe' size='3rem'/></Square> }<IoMdSkipForward color='#9994b6' size='2.5rem'/></div>
+            <div>
+                <IoMdSkipBackward color='#9994b6' size='2.5rem'/>
+                <Square onClick={playPauseAudio}> 
+                {  isPlayingState 
+                    ? <MdPause color='#fffefe' size='3rem'/> 
+                    : <MdPlayArrow color='#fffefe' size='3rem'/> 
+                }
+                </Square>
+                <IoMdSkipForward color='#9994b6' size='2.5rem'/>
+            </div>
         </AudioPlayerControlsContainer>
         
     )

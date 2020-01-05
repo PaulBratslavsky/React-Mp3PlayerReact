@@ -4,7 +4,7 @@ import AudioPlayerImage from './audioplayerimage';
 
 import styled, { createGlobalStyle } from 'styled-components'
 import AudioPlayerMeta from './audioplayermeta';
-import AudioPlayerControls from './audioplayercontrols';
+import AudioPlayerControls from './audiplayercontrols';
 import AudioPlayerVisuals from './audioplayervisuals';
 
 const data = {

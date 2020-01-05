@@ -7,9 +7,18 @@ const AudioPlayerVisualsContainer = styled.div`
 `;
 
 const AudioPlayerVisuals = () => {
+    let playerCanvas = React.createRef();
+
+    React.useEffect( () => {
+        // Canvas
+        playerCanvas.current.width = window.innerWidth;
+        playerCanvas.current.height = window.innerHeight;
+    });
+
     return (
         <AudioPlayerVisualsContainer>
             <p>Graphics go here</p>
+            <canvas ref={playerCanvas}></canvas>
         </AudioPlayerVisualsContainer>
         
     )
